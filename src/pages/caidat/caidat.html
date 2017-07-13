@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Cài Đặt
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-item>
+      <ion-label> Thời Gian Hẹn Trước: </ion-label>
+      <ion-toggle checked="false" [(ngModel)]="isToggled" (ionChange)="TgianHenTT()"></ion-toggle>
+    </ion-item>
+
+    <ion-list *ngIf="TT_ThoiGianHen==0">
+      <ion-item>
+        <ion-label>Time</ion-label>
+        <ion-select [(ngModel)]="ThoiGianHen">
+          <ion-option value="0" checked="true">0p</ion-option>
+          <ion-option value="10">10p</ion-option>
+          <ion-option value="20">20p</ion-option>
+          <ion-option value="30">30p</ion-option>
+          <ion-option value="40">40p</ion-option>
+          <ion-option value="45">45p</ion-option>
+          <ion-option value="60">60p</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-item *ngIf= "TT_ThoiGianHen ==1"> 
+      <ion-input type="number" [(ngModel)]="ThoiGianHen_Nhap" placeholder="nhập số phút muốn báo trước !"></ion-input>
+    </ion-item>
+    <!--<h4>Thời Gian Hẹn Trước:</h4>
+    <ion-list>
+      <ion-item>
+        <ion-label>Time</ion-label>
+        <ion-select [(ngModel)]="ThoiGianHen">
+          <ion-option value="0" checked="true">0p</ion-option>
+          <ion-option value="10">10p</ion-option>
+          <ion-option value="20">20p</ion-option>
+          <ion-option value="30">30p</ion-option>
+          <ion-option value="40">40p</ion-option>
+          <ion-option value="45">45p</ion-option>
+          <ion-option value="60">60p</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>-->
+    <!--thời gian lặp-->
+    <h4>Thời Gian Lặp Lại Thông Báo:</h4>
+    <ion-list>
+      <ion-item>
+        <ion-label>Time</ion-label>
+        <ion-select [(ngModel)]="ThoiGianLap">
+          <ion-option value="0" checked="true">0p</ion-option>
+          <ion-option value="2">2p</ion-option>
+          <ion-option value="3">3p</ion-option>
+          <ion-option value="5">5p</ion-option>
+          <ion-option value="10">10p</ion-option>
+          <ion-option value="15">15p</ion-option>
+          <ion-option value="20">20p</ion-option>
+          <ion-option value="30">30p</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ion-list>
+  <ion-item>
+    <button ion-button color="secondary" block (click)="HenGio()">OK</button>
+  </ion-item>
+
+</ion-content>
