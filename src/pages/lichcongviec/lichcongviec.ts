@@ -11,57 +11,76 @@ import { ActionSheetController } from 'ionic-angular';
     templateUrl: 'lichcongviec.html'
 })
 export class LichCongViecPage {
-
+    /**
+     * khong chon la ngay hien tai
+     *  -> show list theo time cua 1 ngay
+     * chon ngay khac 
+     *   -> clear list -> show list 
+     * chon 1 ngay theo calender 
+     *      
+     */
     Lich = [{
         id: 1,
-        NoiDung: "c",
-        ThoiGian: "11:33"
+        NoiDung: "Lên lớp C#",
+        ThoiGian: "21:33",
+        Ngay: "2017/7/15"
     }, {
         id: 2,
-        NoiDung: "node",
-        ThoiGian: "11:35"
+        NoiDung: "Lập trình hướng đối tượng",
+        ThoiGian: "21:35",
+        Ngay: "2017/7/16"
     }, {
         id: 3,
         NoiDung: "asp.net",
-        ThoiGian: "10:37"
+        ThoiGian: "21:37",
+        Ngay: "2017/7/16"
     }, {
         id: 4,
-        NoiDung: "c#",
-        ThoiGian: "10:39"
+        NoiDung: "Lên lớp C#",
+        ThoiGian: "21:39",
+        Ngay: "2017/7/17"
     }, {
         id: 5,
-        NoiDung: "Hop",
-        ThoiGian: "10:41"
+        NoiDung: "Họp",
+        ThoiGian: "21:41",
+        Ngay: "2017/7/16"
     }, {
         id: 6,
-        NoiDung: "abc",
-        ThoiGian: "10:43"
+        NoiDung: "Họp team",
+        ThoiGian: "21:43",
+        Ngay: "2017/8/17"
     }, {
         id: 7,
-        NoiDung: "về",
-        ThoiGian: "10:45"
+        NoiDung: "Đá bóng",
+        ThoiGian: "21:45",
+        Ngay: "2017/7/17"
     }, {
         id: 8,
-        NoiDung: "net",
-        ThoiGian: "10:47"
+        NoiDung: ".Net",
+        ThoiGian: "21:47",
+        Ngay: "2017/7/17"
     }, {
         id: 9,
-        NoiDung: "an",
-        ThoiGian: "10:49"
+        NoiDung: "Lớp Node",
+        ThoiGian: "21:49",
+        Ngay: "2017/7/17"
     }, {
         id: 10,
-        NoiDung: "ngu",
-        ThoiGian: "10:50"
+        NoiDung: "Báo cáo",
+        ThoiGian: "10:50",
+        Ngay: "2017/7/17"
     }];
     Detail = {
         id: 0,
         NoiDung: "không",
         ThoiGian: "0",
+        Ngay: ""
     }
     ThoiGianHen = 0;
     ThoiGianLap = 0;
     SoLanLap = 0;
     GioCv; PhutCv;
+    NgayCv; ThangCv;
     TrangThai = 0;
     Checked = false;
     idNotify;
@@ -121,6 +140,7 @@ export class LichCongViecPage {
                 this.Detail.id = element.id;
                 this.Detail.NoiDung = element.NoiDung;
                 this.Detail.ThoiGian = element.ThoiGian;
+                this.Detail.Ngay=element.Ngay;
             }
         });
 
@@ -182,33 +202,7 @@ export class LichCongViecPage {
 
             });
         }, 200);
-        // setTimeout(() => {
-        //     if (this.TrangThai == 0) {
-        //         actionSheet = this.actionSheetCtrl.create({
-        //             buttons: [
-        //                 {
-        //                     text: `Đặt Thông Báo`,
-        //                     handler: () => {
-        //                         this.DatThongBao();
-        //                     }
-        //                 }
-        //             ]
-        //         });
-        //     }
-        //     else {
-        //         actionSheet = this.actionSheetCtrl.create({
-        //             buttons: [
-        //                 {
-        //                     text: `Tắt Thông Báo `,
-        //                     handler: () => {
-        //                         this.XoaTb();
-        //                     }
-        //                 }
-        //             ]
-        //         });
-        //     }
-        //     actionSheet.present();
-        // }, 200);
+
 
 
     }
@@ -246,6 +240,15 @@ export class LichCongViecPage {
             alert.present();
         }, 200)
     }
+    TachNgay() {
+        this.ThangCv = this.Detail.Ngay.split('/')[1];
+        this.NgayCv = this.Detail.Ngay.split('/')[2];
+        console.log("ngày cv:");
+        console.log(this.NgayCv);
+        console.log("thang cv:");
+        console.log(this.ThangCv);
+
+    }
     TachThoiGian() {
         //lấy thời gian của công việc tách ra để cài thời gian hẹn của notify
         this.GioCv = this.Detail.ThoiGian.split(':')[0];
@@ -261,7 +264,7 @@ export class LichCongViecPage {
         var day = d.getDate();
         // var hours = d.getHours();
         // var minutes = d.getMinutes();
-
+        this.TachNgay();
         this.SoLanLap = this.ThoiGianHen / this.ThoiGianLap;
         //thời gian báo.
         if (this.PhutCv - this.ThoiGianHen < 0) {
@@ -272,55 +275,53 @@ export class LichCongViecPage {
             this.PhutCv = this.PhutCv - this.ThoiGianHen;
         }
         console.log(this.GioCv + "---" + this.PhutCv);
-
+        if (this.NgayCv > day && this.ThangCv == month) {
+            day = this.NgayCv;
+        }
+        else {
+            if (this.ThangCv > month) {
+                month = this.ThangCv-1;
+                day = this.NgayCv;
+            }
+        }
         var reminder = new Date(year, month, day, this.GioCv, this.PhutCv, 0);
         console.log(reminder);
         let notifi;
         this.idNotify = this.Detail.id;
-        if (d > reminder) {
-            this.HienThongBao("Thông Báo!", "Công việc đã qua không thể đặt thông báo!");
+        if (this.NgayCv < day) {
+            this.HienThongBao("Thông Báo!", "Công việc đã qua không thể đặt thông báo!")
         }
         else {
-            for (let i = 0; i < this.SoLanLap + 1; i++) {
-                if (i > 0) {
-                    this.PhutCv = (this.PhutCv + this.ThoiGianLap * 1);
-                }
-
-                this.idNotify = this.idNotify + (15071995 * 1);
-                console.log(i);
-                console.log(year + "-" + month + "-" + day + "-" + this.GioCv + "-" + this.PhutCv);
-
-                reminder = new Date(year, month, day, this.GioCv, this.PhutCv, 0);
-                console.log(reminder);
-                notifi = {
-                    id: this.idNotify,
-                    title: "Đến Giờ Hẹn !!!",
-                    text: `Công Việc : ${this.Detail.NoiDung} - Thời Gian : ${this.Detail.ThoiGian}`,
-                    at: reminder,
-                    icon: "file://assets/img/clock1.png"
-                };
-                LocalNotifications.schedule(notifi);
-                console.log(notifi);
-                BackgroundMode.enable();
+            if (d > reminder) {
+                this.HienThongBao("Thông Báo!", "Công việc đã qua không thể đặt thông báo!");
             }
-            this.HienThongBao("Thông Báo", "Đã hẹn giờ!");
+            else {
+                for (let i = 0; i < this.SoLanLap + 1; i++) {
+                    if (i > 0) {
+                        this.PhutCv = (this.PhutCv + this.ThoiGianLap * 1);
+                    }
+
+                    this.idNotify = this.idNotify + (15071995 * 1);
+                    console.log(i);
+                    console.log(year + "-" + month + "-" + day + "-" + this.GioCv + "-" + this.PhutCv);
+
+                    reminder = new Date(year, month, day, this.GioCv, this.PhutCv, 0);
+                    console.log(reminder);
+                    notifi = {
+                        id: this.idNotify,
+                        title: "Đến Giờ Hẹn !!!",
+                        text: `Công Việc : ${this.Detail.NoiDung} - Thời Gian : ${this.Detail.ThoiGian}`,
+                        at: reminder,
+                        icon: "file://assets/img/clock1.png"
+                    };
+                    LocalNotifications.schedule(notifi);
+                    console.log(notifi);
+                    BackgroundMode.enable();
+                }
+                this.HienThongBao("Thông Báo", "Đã hẹn giờ!");
+            }
         }
 
-        // LocalNotifications.isScheduled(this.Detail.id).then(results => {
-        //     if (results == true) {
-        //         LocalNotifications.update(notifi);
-        //         console.log(results);
-
-        //     }
-        //     else {
-        //         LocalNotifications.schedule(notifi);
-        //         console.log(results);
-
-        //     }
-        // })
-        // LocalNotifications.schedule(notifi);
-        // console.log(notifi);
-        // BackgroundMode.enable();
 
     }
     XoaTb() {

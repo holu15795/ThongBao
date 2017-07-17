@@ -14,8 +14,8 @@
       <!--<ion-checkbox *ngIf="item.TrangThai==0" checked="false" #check (click)="nhaynhay(item.id,check.checked)"></ion-checkbox>
       <ion-checkbox *ngIf="item.TrangThai==1" checked="true" #check (click)="nhaynhay(item.id,check.checked)"></ion-checkbox>-->     
       <p class="p-item" item-left>
-        {{item.id}} {{item.NoiDung}}
-        <br /> {{item.ThoiGian}}
+        Nội Dung: {{item.NoiDung}} <br /> Ngày: {{item.Ngay}}
+        <br /> Thời gian: {{item.ThoiGian}}
       </p>
       <!--<ion-checkbox *ngIf="!KiemTraTT(item.id)" checked="false" #check (click)="nhaynhay(item.id,check.checked)"></ion-checkbox>-->
 
