@@ -91,12 +91,11 @@ export class CaiDatPage {
     //hẹn giờ nếu isToggled == true thì lấy thời gian hẹn theo cách nhập 
     // == false thì lấy thời gian hẹn theo cách chọn.
     if (this.isToggled == true) {
-      if (this.ThoiGianHen_Nhap * 1 < 0) {
+      if ((this.ThoiGianHen_Nhap * 1) < 0) {
         this.HienThongBao("Thông Báo", "Thời gian hẹn không được nhỏ hơn 0 !");
-        return;
       }
       else {
-        if (this.ThoiGianHen_Nhap * 1 < this.ThoiGianLap) {
+        if ((this.ThoiGianHen_Nhap * 1) < this.ThoiGianLap) {
           this.HienThongBao("Thông Báo", "Thời gian lặp không được lớn hơn thời gian hẹn!");
           return;
         }
@@ -107,15 +106,17 @@ export class CaiDatPage {
       }
     }
     else {
-      // if (this.ThoiGianHen < this.ThoiGianLap) {
-      //   this.HienThongBao("Thông Báo", "Thời gian lặp không được lớn hơn thời gian hẹn!");
-      //   return;
-      // }
-      // else {
+      if ((this.ThoiGianHen*1) < (this.ThoiGianLap*1)) {
+        console.log(this.ThoiGianHen);
+        console.log(this.ThoiGianLap);
+        this.HienThongBao("Thông Báo", "Thời gian lặp không được lớn hơn thời gian hẹn!");
+        return;
+      }
+      else {
         this.setThoiGianHenChon();
         this.setThoiGianLapChon();
-      // }
-    }
+      }
+    }  
     //hiển thị thời gian đã lưu
     this.getThoiGianHen();
     this.getThoiGianLap();
