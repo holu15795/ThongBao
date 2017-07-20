@@ -14,8 +14,15 @@ export class HomePage {
   testRadioResult;
   checkTat =false;
   checkBat=false;
+  id = "AhsnVFjjslsi";
+  idgido;
   constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
-
+    for(let i =0;i< 10;i++){
+      this.idgido=this.id;
+      this.idgido=this.idgido + (147852*i);
+      console.log(this.idgido);
+      
+    }
   }
   Lich() {
     this.navCtrl.push(LichCongViecPage);

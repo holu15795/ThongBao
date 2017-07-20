@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { Platform } from 'ionic-angular';
 import { LocalNotifications, BackgroundMode } from 'ionic-native';
 import { ActionSheetController } from 'ionic-angular';
+import { CaiDatPage } from '../caidat/caidat';
 
 
 @Component({
@@ -22,38 +24,38 @@ export class LichCongViecPage {
     Lich = [{
         id: 1,
         NoiDung: "Lên lớp C#",
-        ThoiGian: "21:33",
-        Ngay: "2017/7/15"
+        ThoiGian: "09:25",
+        Ngay: "2017/7/20"
     }, {
         id: 2,
         NoiDung: "Lập trình hướng đối tượng",
-        ThoiGian: "21:35",
-        Ngay: "2017/7/16"
+        ThoiGian: "09:33",
+        Ngay: "2017/7/20"
     }, {
         id: 3,
         NoiDung: "asp.net",
-        ThoiGian: "21:37",
-        Ngay: "2017/7/16"
+        ThoiGian: "09:14",
+        Ngay: "2017/7/20"
     }, {
         id: 4,
         NoiDung: "Lên lớp C#",
-        ThoiGian: "21:39",
-        Ngay: "2017/7/17"
+        ThoiGian: "16:50",
+        Ngay: "2017/7/18"
     }, {
         id: 5,
         NoiDung: "Họp",
-        ThoiGian: "21:41",
-        Ngay: "2017/7/16"
+        ThoiGian: "10:41",
+        Ngay: "2017/7/18"
     }, {
         id: 6,
         NoiDung: "Họp team",
-        ThoiGian: "21:43",
-        Ngay: "2017/8/17"
+        ThoiGian: "11:01",
+        Ngay: "2017/8/18"
     }, {
         id: 7,
         NoiDung: "Đá bóng",
-        ThoiGian: "21:45",
-        Ngay: "2017/7/17"
+        ThoiGian: "10:53",
+        Ngay: "2017/7/18"
     }, {
         id: 8,
         NoiDung: ".Net",
@@ -87,7 +89,7 @@ export class LichCongViecPage {
     checkTat = false;
     checkBat = false;
     constructor(public navCtrl: NavController, public alertCtrl: AlertController,
-        public storage: Storage, public actionSheetCtrl: ActionSheetController) {
+        public storage: Storage, public plt: Platform) {
         //lấy thời gian hẹn đã lưu trong storege
         storage.get('thoiGianHen').then((val) => {
             console.log('thời gian hẹn : ', val);
@@ -110,6 +112,7 @@ export class LichCongViecPage {
                 this.ThoiGianLap = 5;
             }
         });
+
         // this.Lich.forEach(element => {
         //     element["TrangThai"] = 0;
         // });
@@ -144,7 +147,7 @@ export class LichCongViecPage {
                 this.Detail.id = element.id;
                 this.Detail.NoiDung = element.NoiDung;
                 this.Detail.ThoiGian = element.ThoiGian;
-                this.Detail.Ngay=element.Ngay;
+                this.Detail.Ngay = element.Ngay;
             }
         });
         //thay đổi trạng thái của công việc nếu chưa thiết lập thông báo thì trạng thái tắt, nếu đã thiết lập thì trạng thái bật.
@@ -285,7 +288,7 @@ export class LichCongViecPage {
         else {
             //nếu ngày giống nhau mà tháng của cv > tháng hiện tại thì tháng của notify = tháng cv
             if (this.ThangCv > month) {
-                month = this.ThangCv-1;
+                month = this.ThangCv - 1;
                 day = this.NgayCv;
             }
         }
@@ -293,7 +296,7 @@ export class LichCongViecPage {
         var reminder = new Date(year, month, day, this.GioCv, this.PhutCv, 0);
         console.log(reminder);
         let notifi;
-        
+
         this.idNotify = this.Detail.id;
         //nếu ngày cv < ngày hiện tại  không đặt thông báo được
         if (this.NgayCv < day) {
@@ -323,14 +326,41 @@ export class LichCongViecPage {
                         title: "Đến Giờ Hẹn !!!",
                         text: `Công Việc : ${this.Detail.NoiDung} - Thời Gian : ${this.Detail.ThoiGian}`,
                         at: reminder,
+                        data:this.Detail.id,
                         icon: "file://assets/img/clock1.png"
                     };
                     //set notify
                     LocalNotifications.schedule(notifi);
                     console.log(notifi);
+
+                    // LocalNotifications.on("click", function (notifi) {
+                    //     document.addEventListener("deviceready", function () {
+                    //         alert("ID: " + notifi.id);
+                    //         return;
+                    //     }, false)
+
+                    // });
+                   
+                    // document.addEventListener("deviceready", function () {
+                    //     LocalNotifications.on("click", function (notifi) {
+                    //         alert("ID: " + notifi.id);
+                    //         return;
+                    //     });
+                    // }, false)
+
                     //set background
                     BackgroundMode.enable();
                 }
+                //  this.plt.ready().then(() => {
+                //         LocalNotifications.on("click", (notifi) => {
+                //             console.log(notifi.id);
+                //             console.log(this.Detail.id + 15071995 * 1);
+                //             this.navCtrl.push(CaiDatPage);
+                //             console.log("click" + notifi.id);
+                //             return;
+
+                //         })
+                //     })
                 this.HienThongBao("Thông Báo", "Đã hẹn giờ!");
             }
         }

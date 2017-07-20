@@ -16,12 +16,12 @@ export class CaiDatPage {
   ThoiGianHen_Nhap;
   constructor(public navCtrl: NavController, public storage: Storage,
     public alertCtrl: AlertController) {
-    
+
     //lấy thời gian hẹn đã lưu trong storege
-    
+
     this.getThoiGianHen();
     //lấy thời gian lặp đã lưu trong storege
-    
+
     this.getThoiGianLap();
   }
 
@@ -48,10 +48,10 @@ export class CaiDatPage {
       });
     }, 500);
   }
-  setThoiGianHenNhap(){
+  setThoiGianHenNhap() {
     //lưu thời gian hẹn mới theo thời gian mình nhập vào
-    if(this.ThoiGianHen_Nhap == null){
-      this.ThoiGianHen_Nhap=0;
+    if (this.ThoiGianHen_Nhap == null) {
+      this.ThoiGianHen_Nhap = 0;
     }
     console.log("thời gian hẹn :" + this.ThoiGianHen_Nhap);
     this.storage.set('thoiGianHen', `${this.ThoiGianHen_Nhap}`);
@@ -91,12 +91,30 @@ export class CaiDatPage {
     //hẹn giờ nếu isToggled == true thì lấy thời gian hẹn theo cách nhập 
     // == false thì lấy thời gian hẹn theo cách chọn.
     if (this.isToggled == true) {
-      this.setThoiGianHenNhap();
-      this.setThoiGianLapChon();
+      if (this.ThoiGianHen_Nhap * 1 < 0) {
+        this.HienThongBao("Thông Báo", "Thời gian hẹn không được nhỏ hơn 0 !");
+        return;
+      }
+      else {
+        if (this.ThoiGianHen_Nhap * 1 < this.ThoiGianLap) {
+          this.HienThongBao("Thông Báo", "Thời gian lặp không được lớn hơn thời gian hẹn!");
+          return;
+        }
+        else {
+          this.setThoiGianHenNhap();
+          this.setThoiGianLapChon();
+        }
+      }
     }
-    else{
-      this.setThoiGianHenChon();
-      this.setThoiGianLapChon();
+    else {
+      // if (this.ThoiGianHen < this.ThoiGianLap) {
+      //   this.HienThongBao("Thông Báo", "Thời gian lặp không được lớn hơn thời gian hẹn!");
+      //   return;
+      // }
+      // else {
+        this.setThoiGianHenChon();
+        this.setThoiGianLapChon();
+      // }
     }
     //hiển thị thời gian đã lưu
     this.getThoiGianHen();
