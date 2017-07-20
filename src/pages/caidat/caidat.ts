@@ -46,7 +46,6 @@ export class CaiDatPage {
     setTimeout(() => {
       this.storage.get('thoiGianLap').then((val) => {
         console.log('thời gian lặp : ', val);
-        this.TGianHen=val;
         this.ThoiGianLap = val;
       });
     }, 500);
@@ -86,7 +85,6 @@ export class CaiDatPage {
       console.log('thời gian lặp : ', val);
       if (val != null) {
         console.log(val);
-        this.TGianHen=val;
         this.ThoiGianLap = val;
       }
     });
