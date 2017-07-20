@@ -9,6 +9,7 @@ import { Storage } from '@ionic/storage';
 })
 export class CaiDatPage {
 
+  TGianHen=0;
   ThoiGianHen = 0;
   ThoiGianLap = 0;
   TT_ThoiGianHen = 0;
@@ -32,6 +33,7 @@ export class CaiDatPage {
     setTimeout(() => {
       this.storage.get('thoiGianHen').then((val) => {
         console.log('thời gian hẹn : ', val);
+        this.TGianHen=val;
         this.ThoiGianHen = val;
       });
     }, 500);
@@ -44,6 +46,7 @@ export class CaiDatPage {
     setTimeout(() => {
       this.storage.get('thoiGianLap').then((val) => {
         console.log('thời gian lặp : ', val);
+        this.TGianHen=val;
         this.ThoiGianLap = val;
       });
     }, 500);
@@ -58,6 +61,7 @@ export class CaiDatPage {
     setTimeout(() => {
       this.storage.get('thoiGianHen').then((val) => {
         console.log('thời gian hẹn : ', val);
+        this.TGianHen=val;
         this.ThoiGianHen_Nhap = val;
       });
     }, 500);
@@ -68,6 +72,7 @@ export class CaiDatPage {
       console.log('thời gian hẹn : ', val);
       if (val != null) {
         console.log(val);
+        this.TGianHen=val;
         this.ThoiGianHen = val;
       }
 
@@ -81,6 +86,7 @@ export class CaiDatPage {
       console.log('thời gian lặp : ', val);
       if (val != null) {
         console.log(val);
+        this.TGianHen=val;
         this.ThoiGianLap = val;
       }
     });
