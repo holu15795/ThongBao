@@ -22,31 +22,31 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      LocalNotifications.on("click", (notifi) => {
-        alert(`${notifi.data}`);
-        this.content.push(LichCongViecPage);
-      });
+      // LocalNotifications.on("click", (notifi) => {
+      //   alert(`${notifi.data}`);
+      //   this.content.push(LichCongViecPage);
+      // });
 
-      this.push.hasPermission()
-        .then((res: any) => {
+      // this.push.hasPermission()
+      //   .then((res: any) => {
 
-          if (res.isEnabled) {
-            console.log('We have permission to send push notifications');
-          } else {
-            console.log('We do not have permission to send push notifications');
-          }
+      //     if (res.isEnabled) {
+      //       console.log('We have permission to send push notifications');
+      //     } else {
+      //       console.log('We do not have permission to send push notifications');
+      //     }
 
-        });
-      const options: PushOptions = {
-        android: {
-          senderID: '848269713610'
-        }
-      };
-      const pushObject: PushObject = this.push.init(options);
+      //   });
+      // const options: PushOptions = {
+      //   android: {
+      //     senderID: '848269713610'
+      //   }
+      // };
+      // const pushObject: PushObject = this.push.init(options);
 
-      pushObject.on('notification').subscribe((notification: any) => this.content.push(CaiDatPage));
+      // pushObject.on('notification').subscribe((notification: any) => this.content.push(CaiDatPage));
 
-      pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+      // pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
     });
   }
 }

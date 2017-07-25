@@ -9,8 +9,7 @@
 <ion-content padding>
 
   <ion-item>
-    Thoi Gian hen: {{ThoiGianHen}} <br />
-    Thoi Gian Lap: {{ThoiGianLap}}
+    Thoi Gian hen: {{ThoiGianHen}} <br /> Thoi Gian Lap: {{ThoiGianLap}}
   </ion-item>
   <ion-list>
     <ion-item>
@@ -33,9 +32,16 @@
       </ion-item>
     </ion-list>
 
-    <ion-item *ngIf= "TT_ThoiGianHen ==1"> 
-      <ion-input type="number" [(ngModel)]="ThoiGianHen_Nhap" placeholder="nhập số phút muốn báo trước !"></ion-input>
-    </ion-item>
+    <ion-list *ngIf="TT_ThoiGianHen==1">
+      <ion-item>
+        <ion-label>Số phút muốn báo trước!</ion-label>
+        <ion-input type="number" [(ngModel)]="ThoiGianHen_Nhap" placeholder="{{TGianHen}}"></ion-input>
+      </ion-item>
+    </ion-list>
+    <!--<ion-item *ngIf="TT_ThoiGianHen==1">
+      <h4>Nhập số phút muốn báo trước !</h4>
+      <ion-input type="number" [(ngModel)]="ThoiGianHen_Nhap" placeholder="{{TGianHen}}"></ion-input>
+    </ion-item>-->
     <h4>Thời Gian Lặp Lại Thông Báo:</h4>
     <ion-list>
       <ion-item>

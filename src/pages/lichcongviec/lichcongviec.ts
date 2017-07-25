@@ -24,23 +24,23 @@ export class LichCongViecPage {
     Lich = [{
         id: 1,
         NoiDung: "Lên lớp C#",
-        ThoiGian: "09:25",
-        Ngay: "2017/7/20"
+        ThoiGian: "15:10",
+        Ngay: "2017/7/24"
     }, {
         id: 2,
         NoiDung: "Lập trình hướng đối tượng",
-        ThoiGian: "09:33",
-        Ngay: "2017/7/20"
+        ThoiGian: "16:40",
+        Ngay: "2017/7/24"
     }, {
         id: 3,
         NoiDung: "asp.net",
-        ThoiGian: "09:14",
-        Ngay: "2017/7/20"
+        ThoiGian: "06:00",
+        Ngay: "2017/7/25"
     }, {
         id: 4,
         NoiDung: "Lên lớp C#",
-        ThoiGian: "16:50",
-        Ngay: "2017/7/18"
+        ThoiGian: "1:00",
+        Ngay: "2017/7/25"
     }, {
         id: 5,
         NoiDung: "Họp",
@@ -140,7 +140,6 @@ export class LichCongViecPage {
         this.idNotify = id + (15071995 * 1);
         //kiểm tra xem id này đã có thông báo chưa
         this.KiemTra(this.idNotify);
-        let actionSheet;
         //lấy id của công việc đang chọn set vào Detail để sử dụng.
         this.Lich.forEach(element => {
             if (element.id == id) {
@@ -263,17 +262,30 @@ export class LichCongViecPage {
         var year = d.getFullYear();
         var month = d.getMonth();
         var day = d.getDate();
-        // var hours = d.getHours();
-        // var minutes = d.getMinutes();
+        var hours = d.getHours();
+        var minutes = d.getMinutes();
         //tách ngày
         this.TachNgay();
         //tính số lần lặp
         this.SoLanLap = this.ThoiGianHen / this.ThoiGianLap;
+        console.log("Số lần lặp: ",this.SoLanLap);
+        
         //thời gian báo.
         //nếu phút của công việc < thời gian hẹn thì ta lấy giờ cv -1 và phút = 60-(thời gian hẹn - phút cv)
-        if (this.PhutCv - this.ThoiGianHen < 0) {
-            this.GioCv = this.GioCv - 1;
-            this.PhutCv = 60 - (this.ThoiGianHen - this.PhutCv);
+        if ((this.PhutCv - this.ThoiGianHen) < 0) {
+            this.GioCv=this.GioCv-1;
+            this.ThoiGianHen=this.ThoiGianHen-this.PhutCv;
+            while((this.ThoiGianHen-60)>=0){
+                if((this.GioCv-1)==0){
+                    this.GioCv=25;
+                    this.NgayCv=this.NgayCv-1;
+                }
+                this.GioCv=this.GioCv-1;
+                this.ThoiGianHen=this.ThoiGianHen-60;
+            }
+            this.PhutCv= 60 - (this.ThoiGianHen*1);
+        //    this.GioCv = this.GioCv-1;
+        //    this.PhutCv= 60- (this.ThoiGianHen-this.PhutCv);
         }
         //nếu phút cv > thời gian hẹn, phút cv = phút cv - thời gian hẹn
         else {
@@ -283,7 +295,14 @@ export class LichCongViecPage {
         //tính ngày
         //nếu ngày cv > ngày hiện tại và tháng giống nhau thì ngày của thời gian báo notify = ngày công việc
         if (this.NgayCv > day && this.ThangCv == month) {
-            day = this.NgayCv;
+            let tongThoiGianHienTai = hours * 60 + minutes;
+            if ((1440 - tongThoiGianHienTai * 1) < this.ThoiGianHen) {
+                day = day;
+            }
+            else {
+                day = this.NgayCv;
+            }
+
         }
         else {
             //nếu ngày giống nhau mà tháng của cv > tháng hiện tại thì tháng của notify = tháng cv
@@ -309,7 +328,7 @@ export class LichCongViecPage {
             }
             else {
                 // theo số lần lặp đặt thông báo.
-                for (let i = 0; i < this.SoLanLap + 1; i++) {
+                for (let i = 0; i < this.SoLanLap+1 ; i++) {
                     //nếu lặp lần thứ 2 thì ta lấy số phút notify cộng thêm 1 khoảng thời gian lặp
                     if (i > 0) {
                         this.PhutCv = (this.PhutCv + this.ThoiGianLap * 1);
@@ -321,46 +340,23 @@ export class LichCongViecPage {
 
                     reminder = new Date(year, month, day, this.GioCv, this.PhutCv, 0);
                     console.log(reminder);
+
+
                     notifi = {
                         id: this.idNotify,
                         title: "Đến Giờ Hẹn !!!",
                         text: `Công Việc : ${this.Detail.NoiDung} - Thời Gian : ${this.Detail.ThoiGian}`,
                         at: reminder,
-                        data:this.Detail.id,
-                        icon: "file://assets/img/clock1.png"
+                        data: this.Detail.id,
+                        icon: "res://clock1.png"
                     };
                     //set notify
                     LocalNotifications.schedule(notifi);
                     console.log(notifi);
 
-                    // LocalNotifications.on("click", function (notifi) {
-                    //     document.addEventListener("deviceready", function () {
-                    //         alert("ID: " + notifi.id);
-                    //         return;
-                    //     }, false)
-
-                    // });
-                   
-                    // document.addEventListener("deviceready", function () {
-                    //     LocalNotifications.on("click", function (notifi) {
-                    //         alert("ID: " + notifi.id);
-                    //         return;
-                    //     });
-                    // }, false)
-
-                    //set background
                     BackgroundMode.enable();
                 }
-                //  this.plt.ready().then(() => {
-                //         LocalNotifications.on("click", (notifi) => {
-                //             console.log(notifi.id);
-                //             console.log(this.Detail.id + 15071995 * 1);
-                //             this.navCtrl.push(CaiDatPage);
-                //             console.log("click" + notifi.id);
-                //             return;
 
-                //         })
-                //     })
                 this.HienThongBao("Thông Báo", "Đã hẹn giờ!");
             }
         }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams,Loading } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
@@ -9,14 +9,14 @@ import { Storage } from '@ionic/storage';
 })
 export class CaiDatPage {
 
-  TGianHen=0;
+  TGianHen = 0;
   ThoiGianHen = 0;
   ThoiGianLap = 0;
   TT_ThoiGianHen = 0;
   isToggled = false;
   ThoiGianHen_Nhap;
   constructor(public navCtrl: NavController, public storage: Storage,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController, public navParams: NavParams) {
 
     //lấy thời gian hẹn đã lưu trong storege
 
@@ -24,6 +24,36 @@ export class CaiDatPage {
     //lấy thời gian lặp đã lưu trong storege
 
     this.getThoiGianLap();
+
+    // this.getToggled();
+
+
+  }
+
+  ionViewDidLoad() {
+    console.log("Data get :");
+    console.log(this.navParams.get("toggled"));
+    this.TT_ThoiGianHen = this.navParams.get('toggled');
+    console.log("TT TGH:",this.TT_ThoiGianHen);
+    if(this.TT_ThoiGianHen==1){
+      this.isToggled=true;
+    }
+    else{
+      this.isToggled=false;
+    }
+
+  }
+
+  setToggled() {
+    //lưu thời gian hẹn mới theo thời gian chọn
+    console.log("trạng thái Toggled :" + this.isToggled);
+    this.storage.set('trangThaiToggled', `${this.isToggled}`);
+    // setTimeout(() => {
+    //   this.storage.get('trangThaiToggled').then((val) => {
+    //     console.log('trạng thái toggled : ', val);
+    //     this.isToggled = val;
+    //   });
+    // }, 500);
   }
 
   setThoiGianHenChon() {
@@ -33,7 +63,6 @@ export class CaiDatPage {
     setTimeout(() => {
       this.storage.get('thoiGianHen').then((val) => {
         console.log('thời gian hẹn : ', val);
-        this.TGianHen=val;
         this.ThoiGianHen = val;
       });
     }, 500);
@@ -60,18 +89,37 @@ export class CaiDatPage {
     setTimeout(() => {
       this.storage.get('thoiGianHen').then((val) => {
         console.log('thời gian hẹn : ', val);
-        this.TGianHen=val;
         this.ThoiGianHen_Nhap = val;
       });
     }, 500);
   }
+  getToggled() {
+    //lấy thời gian hẹn đã lưu trong storege
+    this.storage.get('trangThaiToggled').then((val) => {
+      console.log('trạng thái toggled : ', val);
+      if (val != null) {
+        console.log(val);
+        this.isToggled = val;
+        if (this.isToggled == true) {
+          this.TT_ThoiGianHen = 1;
+        }
+        else {
+          this.TT_ThoiGianHen = 0;
+        }
+      }
+    });
+    console.log("trạng thái toggled :");
+    console.log(this.isToggled);
+  }
+
   getThoiGianHen() {
     //lấy thời gian hẹn đã lưu trong storege
     this.storage.get('thoiGianHen').then((val) => {
-      console.log('thời gian hẹn : ', val);
+      console.
+        log('thời gian hẹn : ', val);
       if (val != null) {
         console.log(val);
-        this.TGianHen=val;
+        this.TGianHen = val;
         this.ThoiGianHen = val;
       }
 
@@ -110,7 +158,7 @@ export class CaiDatPage {
       }
     }
     else {
-      if ((this.ThoiGianHen*1) < (this.ThoiGianLap*1)) {
+      if ((this.ThoiGianHen * 1) < (this.ThoiGianLap * 1)) {
         console.log(this.ThoiGianHen);
         console.log(this.ThoiGianLap);
         this.HienThongBao("Thông Báo", "Thời gian lặp không được lớn hơn thời gian hẹn!");
@@ -120,7 +168,7 @@ export class CaiDatPage {
         this.setThoiGianHenChon();
         this.setThoiGianLapChon();
       }
-    }  
+    }
     //hiển thị thời gian đã lưu
     this.getThoiGianHen();
     this.getThoiGianLap();
@@ -145,6 +193,7 @@ export class CaiDatPage {
     else {
       this.TT_ThoiGianHen = 0;
     }
+    this.setToggled();
   }
 
 }

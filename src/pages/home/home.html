@@ -11,5 +11,52 @@
   <ion-item (click)="Lich()">Lịch Công Việc</ion-item>
   <ion-item (click)="CaiDat()">Cài Đặt</ion-item>
 
-  
+  <ion-list>
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="assets/img/clock1.png">
+      </ion-avatar>
+      <h2>Thiết lập thời gian hẹn</h2>
+
+    </ion-item>
+    <ion-item>
+      <ion-avatar item-start>
+        <img src="assets/img/clock1.png">
+      </ion-avatar>
+      <h2>Thiết lập ánh sáng</h2>
+
+    </ion-item>
+  </ion-list>
+
+
+  <ion-card>
+  <ion-card-header>
+    Cài đặt
+  </ion-card-header>
+
+  <ion-list>
+    <button ion-item (click)="CaiDat()">
+      <ion-icon name="time" item-start ></ion-icon>
+      Thiết lập thời gian hẹn
+    </button>
+
+    <button ion-item (click)="Lich()">
+      <ion-icon name="calendar" item-start ></ion-icon>
+      Lịch
+    </button>
+  </ion-list>
+</ion-card>
+
+<ion-list>
+  <ion-item>
+    <ion-icon name="time" item-start></ion-icon>
+        Thiết lập thời gian hẹn
+  </ion-item>
+  <ion-item>
+    <ion-icon name="time" item-start></ion-icon>
+        Thiết lập thời gian hẹn
+  </ion-item>
+</ion-list>
+
+
 </ion-content>

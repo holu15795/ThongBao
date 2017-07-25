@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { LichCongViecPage } from '../lichcongviec/lichcongviec';
 import { CaiDatPage } from '../caidat/caidat';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-home',
@@ -12,116 +13,42 @@ export class HomePage {
   TrangThai = 0;
   testRadioOpen: boolean;
   testRadioResult;
-  checkTat =false;
-  checkBat=false;
-  id = "AhsnVFjjslsi";
+  checkTat = false;
+  checkBat = false
   idgido;
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
-    for(let i =0;i< 10;i++){
-      this.idgido=this.id;
-      this.idgido=this.idgido + (147852*i);
-      console.log(this.idgido);
-      
-    }
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public storage: Storage) {
+
   }
   Lich() {
     this.navCtrl.push(LichCongViecPage);
   }
   CaiDat() {
-    this.navCtrl.push(CaiDatPage);
+    let data = {
+      toggled: '0'
+    };
+    //lấy thời gian hẹn đã lưu trong storege
+    this.storage.get('trangThaiToggled').then((val) => {
+      console.log('trạng thái toggled : ', val);
+      if (val != null) {
+        if (val == "true") {
+          data.toggled='1';
+          console.log("data thay đổi true");
+        }
+        else {
+          data.toggled='0';
+          console.log("data thay đổi false");
+        }
+      }
+      else {
+        data.toggled = '0';
+        console.log("Data thay doi null:", data.toggled);
+      }
+
+    });
+
+    setTimeout(() => {
+      console.log("Gia tri data:", data.toggled);
+      this.navCtrl.push(CaiDatPage, data);
+    }, 200);
   }
-  // showOption() {
-  //   let alert;
-  //   if (this.TrangThai == 0) {
-  //     alert = this.alertCtrl.create({
-  //       title: "Thông Báo!",
-  //       subTitle: "Bạn có muốn bật báo trước cho công việc này!",
-  //       buttons: [
-  //         {
-  //           text: 'Cancel',
-  //           handler: data => {
-  //             console.log('Cancel clicked');
-  //           }
-  //         },
-  //         {
-  //           text: 'Bật',
-  //           handler: data => {
-  //             this.TrangThai = 1;
-  //             console.log('Bật clicked');
-  //           }
-  //         }
-  //       ]
-  //     });
-  //   }
-  //   else {
-  //     alert = this.alertCtrl.create({
-  //       title: "Thông Báo!",
-  //       subTitle: "Bạn muốn tắt báo trước cho công việc này!",
-  //       buttons: [
-  //         {
-  //           text: 'Cancel',
-  //           handler: data => {
-  //             console.log('Cancel clicked');
-  //           }
-  //         },
-  //         {
-  //           text: 'Tắt',
-  //           handler: data => {
-  //             this.TrangThai = 0;
-  //             console.log('Tắt clicked');
-  //           }
-  //         }
-  //       ]
-  //     });
-  //   }
-  //   alert.present();
-  // }
-  // showOption1(){
-  //   if(this.TrangThai==0){
-  //     this.checkBat=false;
-  //     this.checkTat=true;
-  //   }
-  //   else{
-  //     this.checkBat=true;
-  //     this.checkTat=false;
-  //   }
-  //   let alert = this.alertCtrl.create();
-  //   alert.setTitle('Lựa Chọn');
-  //   alert.addInput({
-  //     type: 'radio',
-  //     label: 'Tắt',
-  //     value: '0',
-  //     checked: this.checkTat
-  //   });
-  //   alert.addInput({
-  //     type: 'radio',
-  //     label: 'Bật',
-  //     value: '1',
-  //     checked: this.checkBat
-  //   });
-  //   alert.addButton('Cancel');
-  //   alert.addButton({
-  //     text: 'Ok',
-  //     handler: data => {
-  //       console.log('Radio data:', data);
-  //       console.log(data);
-  //       if(data=="1"){
-  //         this.TrangThai=1;
-  //       }
-  //       if(data=="0"){
-  //         this.TrangThai=0;
-  //       }
-  //       console.log(this.TrangThai);
-  //       this.testRadioOpen = false;
-  //       this.testRadioResult = data;
-  //       console.log(this.testRadioResult);
-        
-  //     }
-  //   });
-  //   alert.present().then(() => {
-  //     this.testRadioOpen = true;
-  //     console.log(this.testRadioResult);
-      
-  //   });
-  // }
 }
